@@ -1,0 +1,17 @@
+-> MissionControl {
+    on message [launch] -> TakeOffLand
+}
+
+TakeOffLand {
+    ascend by 20
+    on low battery -> EmergencyLanding
+    move to point (50, 50)
+} -> ScanArea
+
+ScanArea {
+    move to point (100, 100) at speed 10
+    on low battery -> EmergencyLanding
+} -> EndMission
+
+EndMission { return to base }
+EmergencyLanding { descend to ground }

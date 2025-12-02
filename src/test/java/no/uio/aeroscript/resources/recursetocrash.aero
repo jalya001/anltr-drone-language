@@ -1,0 +1,5 @@
+-> Explore {
+    ascend by 20
+    move to point (random[0, 100], random[0, 100])
+    descend by 10
+} -> Explore

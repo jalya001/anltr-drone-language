@@ -1,0 +1,18 @@
+-> RandomTour {
+    on message [start_tour] -> TakeOff
+}
+
+TakeOff {
+    ascend by 20
+    on low battery -> EmergencyLanding
+    move to point (random[0, 100], random[0, 100])
+} -> Explore
+
+Explore {
+    move to point (random[0, 100], random[0, 100]) at speed 10
+    on low battery -> EmergencyLanding
+    on message [end_tour] -> ReturnToBase
+}
+
+ReturnToBase { return to base }
+EmergencyLanding { descend to ground }

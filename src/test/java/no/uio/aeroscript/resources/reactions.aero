@@ -1,0 +1,27 @@
+-> Start {
+    on message [go_short] -> ShortGo
+}
+
+ShortGo {
+    ascend by 20
+    on low battery -> EmergencyLanding
+    move to point (30, 30)
+    on message [go_short] -> ShorterGo
+}
+
+ShorterGo {
+    on obstacle -> EmergencyLanding
+    ascend by 20
+    on low battery -> EmergencyLanding
+    move to point (40, 40)
+    on message [go_home] -> ReturnToBase
+}
+
+FarGo {
+    move to point (60, 60) at speed 10
+    on low battery -> EmergencyLanding
+    on message [end_tour] -> ReturnToBase
+}
+
+ReturnToBase { return to base }
+EmergencyLanding { descend to ground }

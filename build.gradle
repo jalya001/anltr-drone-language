@@ -1,0 +1,62 @@
+plugins {
+    id 'java'
+    id 'antlr'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'no.uio'
+version = '1.0'
+base {
+    archivesName = "aeroscript"
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java.srcDirs += 'src/main/java'
+        java.srcDirs += 'build/generated-src/main'
+        antlr.srcDirs += 'src/main/antlr'
+    }
+    test {
+        java {
+            srcDirs 'src/test/java'
+        }
+    }
+}
+
+generateGrammarSource {
+    arguments = ["-visitor"]
+    outputDirectory = file("build/generated-src/main/no/uio/aeroscript/antlr")
+    maxHeapSize = "64m"
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation group: 'org.antlr', name: 'antlr4-runtime', version: '4.13.1'
+    implementation group: 'org.antlr', name: 'antlr4-maven-plugin', version: '4.13.1'
+    antlr group: 'org.antlr', name: 'antlr4', version: '4.13.1'
+    implementation 'org.jline:jline:3.25.1'
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(
+                'Main-Class': 'no.uio.aeroscript.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+mainClassName = 'no.uio.aeroscript.Main'

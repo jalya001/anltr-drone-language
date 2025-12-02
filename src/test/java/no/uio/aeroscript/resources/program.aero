@@ -1,0 +1,20 @@
+-> RandomTour { ascend by 20 } -> TakeOff
+TakeOff {
+    ascend by 20
+    move to point (random[0, 100], random[0, 100])
+    descend by 10
+} -> Explore
+Explore {
+    ascend by 20 at speed 10
+    move to point (random[0, 100], random[0, 100])
+    descend by 10
+} -> Investigate
+Investigate {
+    ascend by 20 for 10 seconds
+    move by 600
+    turn left by 360 at speed 10
+    descend by 10
+} -> GoHome
+GoHome {
+    return to base
+}
